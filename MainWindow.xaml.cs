@@ -14,14 +14,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Blade_Ball_Things
 {
     /// <summary>
     /// Lógica de interacción para MainWindow.xaml
     /// </summary>
+    /// 
+    
     public partial class MainWindow : Window
     {
+        DispatcherTimer asignvalue = new DispatcherTimer();        
         [DllImport("user32.dll")]
         private static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
 
@@ -43,6 +47,14 @@ namespace Blade_Ball_Things
         public MainWindow()
         {
             InitializeComponent();
+            asignvalue.Tick += Asignvalue_Tick;
+            asignvalue.Interval = new TimeSpan(0, 0, 0, 0, 1);
+            asignvalue.Start();
+        }
+
+        private void Asignvalue_Tick(object sender, EventArgs e)
+        {
+           ValueSelected.Content = Math.Floor(ClicksPerSecond.Value);
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -107,8 +119,9 @@ namespace Blade_Ball_Things
 
                 if (foregroundWindow == hWnd && isKeyPressed)
                 {
+
                     SimulateMouseClick();
-                    await Task.Delay((int)(1000.0 / ClicksPerSecond.Value));
+                    Thread.Sleep((int)(1000.0 / ClicksPerSecond.Value));
                 }
 
                 await Task.Delay(10);

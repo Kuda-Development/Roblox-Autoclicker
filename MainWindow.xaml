@@ -6,6 +6,7 @@
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
+        ResizeMode="NoResize"
         AllowsTransparency="True"
         xmlns:local="clr-namespace:Blade_Ball_Things"
         mc:Ignorable="d" Topmost="True"
@@ -212,8 +213,8 @@
         <Grid>
             <Grid Background="Transparent" MouseLeftButtonDown="Grid_MouseLeftButtonDown" Margin="0,0,0,394">
                 <Label Content="Blade Ball Things" FontSize="14" Foreground="#1a1b1b" Margin="10,13,189,11" />
-                <Button Content="&#xe8bb;" FontSize="14" Foreground="#1a1b1b" FontFamily="Segoe Fluent Icons" Margin="275,0,0,0" />
-                <Button Content="&#xe921;" FontSize="14" Foreground="#1a1b1b" FontFamily="Segoe Fluent Icons" Margin="230,0,45,0" />
+                <Button Content="&#xe8bb;" FontSize="14" Foreground="#1a1b1b" FontFamily="Segoe Fluent Icons" Margin="275,0,0,0" Click="Button_Click_2" />
+                <Button Content="&#xe921;" FontSize="14" Foreground="#1a1b1b" FontFamily="Segoe Fluent Icons" Margin="230,0,45,0" Click="Button_Click_3" />
             </Grid>
             <Grid Margin="0,52,0,0">
                 <Label Content="Keybind" FontSize="14" Foreground="#1a1b1b" Margin="26,25,233,337" />

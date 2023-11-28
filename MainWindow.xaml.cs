@@ -84,17 +84,21 @@ namespace Blade_Ball_Things
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             stopped = true;
+            setStatus("Off", true);
+            setStatus("");
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            stopped = false;
+
             IntPtr hWnd = FindWindow(null, "Roblox");
 
             while (true)
             {
                 if (stopped) break;
 
-                bool isKeyPressed = GetAsyncKeyState(int.Parse($"0x{(int)key}")) != 0; // ESTA PUTA COJONERIA NO SIRVE
+                bool isKeyPressed = GetAsyncKeyState(KeyInterop.VirtualKeyFromKey(key)) != 0;
                 IntPtr foregroundWindow = GetForegroundWindow();
 
 
@@ -104,7 +108,7 @@ namespace Blade_Ball_Things
                 if (foregroundWindow == hWnd && isKeyPressed)
                 {
                     SimulateMouseClick();
-                    //await Task.Delay((int)(1000.0 / ClicksPerSecond.Value));
+                    await Task.Delay((int)(1000.0 / ClicksPerSecond.Value));
                 }
 
                 await Task.Delay(10);
@@ -115,6 +119,16 @@ namespace Blade_Ball_Things
         {
             mouse_event(0x00000002, 0, 0, 0, 0);
             mouse_event(0x00000004, 0, 0, 0, 0);
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
         }
     }
 }

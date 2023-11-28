@@ -1,0 +1,233 @@
+﻿<Window x:Class="Blade_Ball_Things.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="True"
+        xmlns:local="clr-namespace:Blade_Ball_Things"
+        mc:Ignorable="d" Topmost="True"
+        Title="MainWindow" Height="450" Width="324">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="1" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#ddeaf4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="#FFE2E2E2" CornerRadius="5">
+                            <ScrollViewer x:Name="PART_ContentHost" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#c7c7c7"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Background" Value="#c7c7c7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="#c7c7c7"/>
+            <Setter Property="MaxLength" Value="1"/>
+        </Style>
+        <Style x:Key="Primary" TargetType="Button">
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="Background" Value="#0078D4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Secondary" TargetType="Button">
+            <Setter Property="Foreground" Value="#1E1E1E"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E0E0E0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SliderAccentButtonStyle" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Background="Transparent">
+                            <Border Height="4" CornerRadius="2, 0, 0, 2" Background="{TemplateBinding Foreground}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SliderButtonStyle" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Background="Transparent">
+                            <Border Height="4" CornerRadius="0, 2, 2, 0" Background="{TemplateBinding Foreground}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SliderThumbStyle" TargetType="{x:Type Thumb}">
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="20" />
+            <Setter Property="BorderThickness" Value="5" />
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Grid>
+                            <Border Name="AccentThumb"
+                                        Background="#0078D4"
+                                        BorderBrush="#454545"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Width="20"
+                                        Height="20"
+                                        CornerRadius="50" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="BaseVolumeSliderStyle" TargetType="{x:Type Slider}">
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Minimum" Value="0" />
+            <Setter Property="Maximum" Value="100" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="Interval" Value="1" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="SmallChange" Value="1" />
+            <Setter Property="LargeChange" Value="10" />
+            <Setter Property="IsManipulationEnabled" Value="true" />
+        </Style>
+
+        <Style x:Key="{x:Type Slider}"
+                   BasedOn="{StaticResource BaseVolumeSliderStyle}"
+                   TargetType="{x:Type Slider}">
+            <Setter Property="Template" Value="{DynamicResource VolumeSliderTemplate}" />
+        </Style>
+
+        <ControlTemplate x:Key="VolumeSliderTemplate" TargetType="{x:Type Slider}">
+            <Grid>
+                <Border Name="TrackBackground" Height="2" />
+
+                <Track Name="PART_Track">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Name="SliderLeft"
+                                          Command="Slider.DecreaseLarge"
+                                          Foreground="#0078D4"
+                                          Style="{StaticResource SliderAccentButtonStyle}" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Name="SliderThumb">
+                            <Thumb.Style>
+                                <Style BasedOn="{StaticResource SliderThumbStyle}" TargetType="{x:Type Thumb}">
+                                    <Setter Property="Foreground" Value="#0078D4" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource TemplatedParent}}" Value="true">
+                                            <Setter Property="BorderThickness" Value="3" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=IsMouseCaptureWithin, RelativeSource={RelativeSource TemplatedParent}}" Value="true">
+                                            <Setter Property="BorderThickness" Value="6" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Thumb.Style>
+                        </Thumb>
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Name="SliderRight"
+                                          Command="Slider.IncreaseLarge"
+                                          Foreground="#9B9B9B"
+                                          Style="{StaticResource SliderButtonStyle}" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+    </Window.Resources>
+    <Border Margin="2, 2, 2, 2" CornerRadius="10">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#f7fbfe" Offset="0"/>
+                <GradientStop Color="#f1f8fe" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Grid Background="Transparent" MouseLeftButtonDown="Grid_MouseLeftButtonDown" Margin="0,0,0,394">
+                <Label Content="Blade Ball Things" FontSize="14" Foreground="#1a1b1b" Margin="10,13,189,11" />
+                <Button Content="&#xe8bb;" FontSize="14" Foreground="#1a1b1b" FontFamily="Segoe Fluent Icons" Margin="275,0,0,0" />
+                <Button Content="&#xe921;" FontSize="14" Foreground="#1a1b1b" FontFamily="Segoe Fluent Icons" Margin="230,0,45,0" />
+            </Grid>
+            <Grid Margin="0,52,0,0">
+                <Label Content="Keybind" FontSize="14" Foreground="#1a1b1b" Margin="26,25,233,337" />
+                <TextBox x:Name="kebind" PreviewMouseDown="kebind_PreviewMouseDown" PreviewKeyDown="kebind_PreviewKeyDown" Margin="92,29,160,341" Text="E" />
+                <Label Content="Clicks per second" FontSize="14" Foreground="#1a1b1b" Margin="26,62,175,300" />
+                <Label FontSize="8" Content="50" Foreground="#1a1b1b" Margin="150,86,150,288" />
+                <Label FontSize="8" Content="150" Foreground="#1a1b1b" Margin="250,86,46,288" />
+                <Slider Minimum="50" Maximum="150" x:Name="ClicksPerSecond" Margin="150,62,48,0" VerticalAlignment="Top"/>
+                <Border Margin="157,118,158,270" Width="5" Height="5" Background="#000" Opacity="0.2" CornerRadius="1000"/>
+                <Button Style="{StaticResource Primary}" Margin="13,144,165,214" Content="Start watching" Click="Button_Click_1"/>
+                <Button Style="{StaticResource Secondary}" Margin="160,144,21,214" Content="Stop watching" Click="Button_Click"/>
+                <Label x:Name="status" Content="Status: Off" FontSize="14" Foreground="#1a1b1b" Margin="13,179,48,183" />
+                <Label x:Name="text" Content="" FontSize="14" Foreground="#1a1b1b" Margin="13,211,58,151" />
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

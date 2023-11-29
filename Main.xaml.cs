@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Blade_Ball_Things
@@ -21,7 +13,7 @@ namespace Blade_Ball_Things
     /// <summary>
     /// Interaction logic for Main.xaml
     /// </summary>
-    public partial class Main : Window
+    public partial class Main
     {
         [DllImport("user32.dll")]
         private static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
@@ -30,28 +22,25 @@ namespace Blade_Ball_Things
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         [DllImport("user32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
         private static extern short GetAsyncKeyState(int vKey);
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
 
-        Key key = Key.E;
-        bool IsRunning = false;
-        DispatcherTimer asignvalue = new DispatcherTimer();
+        private Key _key = Key.E;
+        private bool _isRunning;
+        private readonly DispatcherTimer _assignedValue = new DispatcherTimer();
 
         public Main()
         {
             InitializeComponent();
             LoadSettings();
-            asignvalue.Tick += Asignvalue_Tick;
-            asignvalue.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            asignvalue.Start();
+            _assignedValue.Tick += AssignedValueTick;
+            _assignedValue.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            _assignedValue.Start();
         }
 
-        private void Asignvalue_Tick(object sender, EventArgs e)
+        private void AssignedValueTick(object sender, EventArgs e)
         {
             SelectedValue.Content = Math.Floor(ValueSlider.Value);
             SaveSettings();
@@ -77,61 +66,57 @@ namespace Blade_Ball_Things
         {
             var textbox = (TextBox)sender;
 
-            if (!textbox.IsKeyboardFocusWithin)
-            {
-                textbox.Clear();
-                textbox.Focus();
-            }
+            if (textbox.IsKeyboardFocusWithin) return;
+            textbox.Clear();
+            textbox.Focus();
         }
 
         private void kebind_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             var textbox = (TextBox)sender;
 
-            if (char.IsLetter(e.Key.ToString(), 0))
-            {
-                var newText = e.Key.ToString();
-                Enum.TryParse(newText, out key);
-                textbox.Text = newText;
-                e.Handled = true;
-            }
+            if (!char.IsLetter(e.Key.ToString(), 0)) return;
+            var newText = e.Key.ToString();
+            Enum.TryParse(newText, out _key);
+            textbox.Text = newText;
+            e.Handled = true;
         }
 
         private void MakeAppTopmost(object sender, MouseButtonEventArgs e)
         {
-            if (!Topmost)
+            if (!base.Topmost)
             {
-                Topmost = true;
+                base.Topmost = true;
                 ((Storyboard)TryFindResource("TopmostOn")).Begin();
             }
             else
             {
-                Topmost = false;
+                base.Topmost = false;
                 ((Storyboard)TryFindResource("TopmostOff")).Begin();
             }
         }
 
-        private async void StartAC(object sender, RoutedEventArgs e)
+        private async void StartAc(object sender, RoutedEventArgs e)
         {
-            IsRunning = !IsRunning; 
-            start_button.Content = IsRunning ? "Stop" : "Start";
-            setStatus(!IsRunning ? "Stopped" : null, true);
-            setStatus(!IsRunning ? "Start AC" : null );
+            _isRunning = !_isRunning; 
+            StartButton.Content = _isRunning ? "Stop" : "Start";
+            SetStatus(!_isRunning ? "Stopped" : null, true);
+            SetStatus(!_isRunning ? "Start AC" : null );
 
-            IntPtr hWnd = FindWindow(null, "Roblox");
+            var hWnd = FindWindow(null, "Roblox");
 
             while (true)
             {
-                if (!IsRunning) break;
+                if (!_isRunning) break;
 
-                bool isKeyPressed = GetAsyncKeyState(KeyInterop.VirtualKeyFromKey(key)) != 0;
-                IntPtr foregroundWindow = GetForegroundWindow();
+                var isKeyPressed = GetAsyncKeyState(KeyInterop.VirtualKeyFromKey(_key)) != 0;
+                var foregroundWindow = GetForegroundWindow();
 
 
-                setStatus(foregroundWindow != hWnd ? "Go to Roblox" : "Waiting key");
+                SetStatus(foregroundWindow != hWnd ? "Go to Roblox" : "Waiting key");
 
-                setStatus(foregroundWindow != hWnd ? "Started" : isKeyPressed ? "Clicking" : "idle", true);
-                setStatus(foregroundWindow != hWnd ? "Open Roblox" : isKeyPressed ? "Enjoy" : "Waiting key");
+                SetStatus(foregroundWindow != hWnd ? "Started" : isKeyPressed ? "Clicking" : "idle", true);
+                SetStatus(foregroundWindow != hWnd ? "Open Roblox" : isKeyPressed ? "Enjoy" : "Waiting key");
 
                 if (foregroundWindow == hWnd && isKeyPressed)
                 {
@@ -142,12 +127,13 @@ namespace Blade_Ball_Things
                 await Task.Delay(10);
             }
         }
-        static void SimulateMouseClick()
+
+        private static void SimulateMouseClick()
         {
             mouse_event(0x00000002, 0, 0, 0, 0);
             mouse_event(0x00000004, 0, 0, 0, 0);
         }
-        private void setStatus(string input, [Optional] bool indication)
+        private void SetStatus(string input, [Optional] bool indication)
         {
             if (!indication) Indication.Content ="Indication: " + input;
             else Status.Content = $"Status: {input}";
@@ -155,20 +141,21 @@ namespace Blade_Ball_Things
 
         private void SaveSettings()
         {
-            Properties.Settings.Default.Keybind = key.ToString();
+            Properties.Settings.Default.Keybind = _key.ToString();
             Properties.Settings.Default.CPSValue = ValueSlider.Value;
-            Properties.Settings.Default.Topmost = Topmost;
+            Properties.Settings.Default.Topmost = base.Topmost;
             Properties.Settings.Default.Save();
         }
 
         private void LoadSettings()
         {
-            KeyConverter k = new KeyConverter();
+            var k = new KeyConverter();
             Keybind.Text = Properties.Settings.Default.Keybind;
-            key = (Key)k.ConvertFromString(Properties.Settings.Default.Keybind);
+            // ReSharper disable once PossibleNullReferenceException
+            _key = (Key)k.ConvertFromString(Properties.Settings.Default.Keybind);
             ValueSlider.Value = Properties.Settings.Default.CPSValue;
-            Topmost = Properties.Settings.Default.Topmost;
-            if(Topmost)
+            base.Topmost = Properties.Settings.Default.Topmost;
+            if(base.Topmost)
             {
                 ((Storyboard)TryFindResource("TopmostOn")).Begin();
             }

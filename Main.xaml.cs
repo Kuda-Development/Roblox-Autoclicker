@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
-namespace Blade_Ball_Things
+namespace Autoclicker
 {
     /// <summary>
     /// Interaction logic for Main.xaml
@@ -16,7 +16,13 @@ namespace Blade_Ball_Things
     public partial class Main
     {
         [DllImport("user32.dll")]
-        private static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
+        private static extern void mouse_event(
+            int dwFlags,
+            int dx,
+            int dy,
+            int dwData,
+            int dwExtraInfo
+        );
 
         [DllImport("user32.dll")]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
@@ -30,6 +36,7 @@ namespace Blade_Ball_Things
         private Key _key = Key.E;
         private bool _isRunning;
         private readonly DispatcherTimer _assignedValue = new DispatcherTimer();
+        private bool textBoxClicked = false;
 
         public Main()
         {
@@ -44,80 +51,102 @@ namespace Blade_Ball_Things
         {
             SelectedValue.Content = Math.Floor(ValueSlider.Value);
             SaveSettings();
-
         }
 
-        private void MoveApp(object sender, MouseButtonEventArgs e)
-        {
-            DragMove();
-        }
+        private void MoveApp(object sender, MouseButtonEventArgs e) => DragMove();
 
-        private void CloseApp(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
+        private void CloseApp(object sender, RoutedEventArgs e) => Application.Current.Shutdown();
 
-        private void MinimizeApp(object sender, RoutedEventArgs e)
-        {
+        private void MinimizeApp(object sender, RoutedEventArgs e) =>
             WindowState = WindowState.Minimized;
-        }
 
         private void kebind_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var textbox = (TextBox)sender;
 
-            if (textbox.IsKeyboardFocusWithin) return;
-            textbox.Clear();
-            textbox.Focus();
+            if (!textbox.IsKeyboardFocusWithin)
+            {
+                textbox.Clear();
+                textbox.Focus();
+            }
+
+            textBoxClicked = true;
         }
 
         private void kebind_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             var textbox = (TextBox)sender;
 
-            if (!char.IsLetter(e.Key.ToString(), 0)) return;
+            if (!textBoxClicked || !char.IsLetter(e.Key.ToString(), 0))
+                return;
+
             var newText = e.Key.ToString();
             Enum.TryParse(newText, out _key);
             textbox.Text = newText;
             e.Handled = true;
+
+            textBoxClicked = false;
         }
 
         private void MakeAppTopmost(object sender, MouseButtonEventArgs e)
         {
-            if (!base.Topmost)
+            if (Topmost)
             {
-                base.Topmost = true;
-                ((Storyboard)TryFindResource("TopmostOn")).Begin();
+                Topmost = false;
+                ((Storyboard)TryFindResource("TopmostOff")).Begin();
             }
             else
             {
-                base.Topmost = false;
-                ((Storyboard)TryFindResource("TopmostOff")).Begin();
+                Topmost = true;
+                ((Storyboard)TryFindResource("TopmostOn")).Begin();
             }
         }
 
         private async void StartAc(object sender, RoutedEventArgs e)
         {
-            _isRunning = !_isRunning; 
+            _isRunning = !_isRunning;
             StartButton.Content = _isRunning ? "Stop" : "Start";
             SetStatus(!_isRunning ? "Stopped" : null, true);
-            SetStatus(!_isRunning ? "Start AC" : null );
+            SetStatus(!_isRunning ? "Start AC" : null);
 
             var hWnd = FindWindow(null, "Roblox");
 
             while (true)
             {
-                if (!_isRunning) break;
+                if (!_isRunning)
+                    break;
 
                 var isKeyPressed = GetAsyncKeyState(KeyInterop.VirtualKeyFromKey(_key)) != 0;
                 var foregroundWindow = GetForegroundWindow();
 
-
                 SetStatus(foregroundWindow != hWnd ? "Go to Roblox" : "Waiting key");
 
-                SetStatus(foregroundWindow != hWnd ? "Started" : isKeyPressed ? "Clicking" : "idle", true);
-                SetStatus(foregroundWindow != hWnd ? "Open Roblox" : isKeyPressed ? "Enjoy" : "Waiting key");
+                SetStatus(
+                    foregroundWindow != hWnd
+                        ? "Started"
+                        : isKeyPressed
+                            ? "Clicking"
+                            : "idle",
+                    true
+                );
+                SetStatus(
+                    foregroundWindow != hWnd
+                        ? "Open Roblox"
+                        : isKeyPressed
+                            ? "Enjoy"
+                            : "Waiting key"
+                );
+                if (foregroundWindow == hWnd)
+                {
+                    ((Storyboard)TryFindResource("UnFocus")).Begin();
+                    Opacity = 0.5;
+                }
+                else
+                {
+                    ((Storyboard)TryFindResource("OnFocus")).Begin();
 
+                    Opacity = 1;
+                }
                 if (foregroundWindow == hWnd && isKeyPressed)
                 {
                     SimulateMouseClick();
@@ -133,17 +162,20 @@ namespace Blade_Ball_Things
             mouse_event(0x00000002, 0, 0, 0, 0);
             mouse_event(0x00000004, 0, 0, 0, 0);
         }
+
         private void SetStatus(string input, [Optional] bool indication)
         {
-            if (!indication) Indication.Content ="Indication: " + input;
-            else Status.Content = $"Status: {input}";
+            if (!indication)
+                Indication.Content = "Indication: " + input;
+            else
+                Status.Content = $"Status: {input}";
         }
 
         private void SaveSettings()
         {
             Properties.Settings.Default.Keybind = _key.ToString();
             Properties.Settings.Default.CPSValue = ValueSlider.Value;
-            Properties.Settings.Default.Topmost = base.Topmost;
+            Properties.Settings.Default.Topmost = Topmost;
             Properties.Settings.Default.Save();
         }
 
@@ -151,20 +183,11 @@ namespace Blade_Ball_Things
         {
             var k = new KeyConverter();
             Keybind.Text = Properties.Settings.Default.Keybind;
-            // ReSharper disable once PossibleNullReferenceException
             _key = (Key)k.ConvertFromString(Properties.Settings.Default.Keybind);
             ValueSlider.Value = Properties.Settings.Default.CPSValue;
-            base.Topmost = Properties.Settings.Default.Topmost;
-            if(base.Topmost)
-            {
+            Topmost = Properties.Settings.Default.Topmost;
+            if (Topmost)
                 ((Storyboard)TryFindResource("TopmostOn")).Begin();
-            }
-           
-        }
-
-        private void AssignSliderValue(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-
         }
     }
 }

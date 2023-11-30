@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Keybind" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">E</Value>
     </Setting>
     <Setting Name="CPSValue" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>

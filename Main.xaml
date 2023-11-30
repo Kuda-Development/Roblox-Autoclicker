@@ -1,33 +1,50 @@
 ﻿<Window
-    x:Class="Blade_Ball_Things.Main"
+    x:Class="Autoclicker.Main"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Window"
     Title="Blade Ball AC"
     Width="428"
     Height="281"
     AllowsTransparency="True"
     Background="{x:Null}"
     ResizeMode="NoResize"
-    Topmost="True"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
     <Window.Resources>
-        <!-- ReSharper disable once Xaml.RedundantResource -->
-        <Storyboard x:Key="TopmostOn">
-            <ColorAnimation Duration="0:0:0.3" From="#FF737373" To="#60cdff" Storyboard.TargetName="Topmost"
-                            Storyboard.TargetProperty="(Label.Foreground). (SolidColorBrush.Color)">
-            </ColorAnimation>
+        <Storyboard x:Key="UnFocus">
+            <DoubleAnimation
+                Storyboard.TargetName="Window"
+                Storyboard.TargetProperty="Opacity"
+                To="0.5"
+                Duration="0:0:0.1" />
         </Storyboard>
-        
-        <!-- ReSharper disable once Xaml.RedundantResource -->
-        <Storyboard x:Key="TopmostOff">
-            <ColorAnimation Duration="0:0:0.3" From="#60cdff" To="#FF737373" Storyboard.TargetName="Topmost"
-                            Storyboard.TargetProperty="(Label.Foreground). (SolidColorBrush.Color)">
+        <Storyboard x:Key="OnFocus">
+            <DoubleAnimation
+                Storyboard.TargetName="Window"
+                Storyboard.TargetProperty="Opacity"
+                To="1"
+                Duration="0:0:0.1" />
+        </Storyboard>
+        <Storyboard x:Key="TopmostOn">
+            <ColorAnimation
+                Storyboard.TargetName="TopmostToggle"
+                Storyboard.TargetProperty="(Label.Foreground).(SolidColorBrush.Color)"
+                From="#FF737373"
+                To="#60cdff"
+                Duration="0:0:0.3" />
+        </Storyboard>
 
-            </ColorAnimation>
+        <Storyboard x:Key="TopmostOff">
+            <ColorAnimation
+                Storyboard.TargetName="TopmostToggle"
+                Storyboard.TargetProperty="(Label.Foreground). (SolidColorBrush.Color)"
+                From="#60cdff"
+                To="#FF737373"
+                Duration="0:0:0.3" />
 
         </Storyboard>
         <Style TargetType="TextBox">
@@ -119,9 +136,12 @@
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Rectangle Margin="2" StrokeDashArray="1 2"
-                                   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
-                                   SnapsToDevicePixels="true" StrokeThickness="1" />
+                        <Rectangle
+                            Margin="2"
+                            SnapsToDevicePixels="true"
+                            Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                            StrokeDashArray="1 2"
+                            StrokeThickness="1" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -135,25 +155,32 @@
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Padding" Value="50 8" />
+            <Setter Property="Padding" Value="50,8" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" CornerRadius="5" Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <Border
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5"
+                            SnapsToDevicePixels="true">
+                            <ContentPresenter
+                                x:Name="contentPresenter"
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Focusable="False"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </Border>
                         <ControlTemplate.Triggers>
 
                             <Trigger Property="IsMouseOver" Value="true">
 
-                                <Setter Property="Background" TargetName="border" Value="#5abce8" />
-                                <Setter Property="BorderBrush" TargetName="border" Value="#484848" />
+                                <Setter TargetName="border" Property="Background" Value="#5abce8" />
+                                <Setter TargetName="border" Property="BorderBrush" Value="#484848" />
                             </Trigger>
 
 
@@ -181,7 +208,7 @@
                         HorizontalAlignment="Left"
                         VerticalContentAlignment="Center"
                         Foreground="#FFD2D2D2">
-                        Blade Ball AC
+                        Roblox AC
                     </Label>
                     <Button
                         Width="45"
@@ -214,12 +241,13 @@
                             Foreground="#FFE0E0E0">
                             Keybind
                         </Label>
-                        <TextBox x:Name="Keybind"
-                                 Width="100"
-                                 HorizontalAlignment="Right"
-                                 PreviewKeyDown="kebind_PreviewKeyDown"
-                                 PreviewMouseDown="kebind_PreviewMouseDown"
-                                 Text="E" />
+                        <TextBox
+                            x:Name="Keybind"
+                            Width="100"
+                            HorizontalAlignment="Right"
+                            PreviewKeyDown="kebind_PreviewKeyDown"
+                            PreviewMouseDown="kebind_PreviewMouseDown"
+                            Text="E" />
 
 
                     </Grid>
@@ -236,29 +264,34 @@
                                 Foreground="#FFE0E0E0">
                                 Clicks per second
                             </Label>
-                            <Slider x:Name="ValueSlider"
-                                    Width="100"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Top"
-                                    Maximum="30"
-                                    Value="1"
-                                    Minimum="1" ValueChanged="AssignSliderValue" />
+                            <Slider
+                                x:Name="ValueSlider"
+                                Width="100"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Maximum="30"
+                                Minimum="1"
+                                Value="1" />
 
 
-                            <Label x:Name="SelectedValue"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Bottom" Foreground="#FFADADAD">
+                            <Label
+                                x:Name="SelectedValue"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Foreground="#FFADADAD">
                                 Current: 1
                             </Label>
                             <Label
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom" Foreground="#FFADADAD">
+                                VerticalAlignment="Bottom"
+                                Foreground="#FFADADAD">
                                 30
                             </Label>
                             <Label
                                 Margin="0,0,84,0"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom" Foreground="#FFADADAD">
+                                VerticalAlignment="Bottom"
+                                Foreground="#FFADADAD">
                                 1
                             </Label>
 
@@ -266,26 +299,48 @@
 
 
                     </Grid>
-                    <Grid Margin="50,122,50,70" Height="40" x:Name="WatchButtons">
-                        <Button x:Name="StartButton" Style="{DynamicResource W11Button}" VerticalAlignment="Center"
-                                HorizontalAlignment="Center" Background="#60CDFF" Width="325" Click="StartAc">
+                    <Grid
+                        x:Name="WatchButtons"
+                        Height="40"
+                        Margin="50,122,50,70">
+                        <Button
+                            x:Name="StartButton"
+                            Width="325"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="#60CDFF"
+                            Click="StartAc"
+                            Style="{DynamicResource W11Button}">
                             Start
                         </Button>
                     </Grid>
-                    <Grid Margin="30,174,30,28" Height="30">
-                        <Label HorizontalContentAlignment="Center" Width="182" Height="30" x:Name="Status"
-                               Foreground="#FFBBBABA" HorizontalAlignment="Left">
+                    <Grid Height="30" Margin="30,174,30,28">
+                        <Label
+                            x:Name="Status"
+                            Width="182"
+                            Height="30"
+                            HorizontalAlignment="Left"
+                            HorizontalContentAlignment="Center"
+                            Foreground="#FFBBBABA">
                             Status: Stopped
                         </Label>
-                        <Label x:Name="Indication" HorizontalContentAlignment="Center" Width="182" Height="30"
-                               HorizontalAlignment="Right" Foreground="#FFBBBABA">
+                        <Label
+                            x:Name="Indication"
+                            Width="182"
+                            Height="30"
+                            HorizontalAlignment="Right"
+                            HorizontalContentAlignment="Center"
+                            Foreground="#FFBBBABA">
                             Indication: Start AC
                         </Label>
                     </Grid>
                 </Grid>
-                <Grid VerticalAlignment="Bottom" Height="30">
-                    <Label x:Name="Topmost" HorizontalContentAlignment="Center" Foreground="#FF737373"
-                           MouseUp="MakeAppTopmost">
+                <Grid Height="30" VerticalAlignment="Bottom">
+                    <Label
+                        x:Name="TopmostToggle"
+                        HorizontalContentAlignment="Center"
+                        Foreground="#FF737373"
+                        MouseUp="MakeAppTopmost">
                         Kuda LLC
                     </Label>
                 </Grid>

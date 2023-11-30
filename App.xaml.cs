@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Blade_Ball_Things
+namespace Autoclicker
 {
     /// <summary>
     /// Lógica de interacción para App.xaml

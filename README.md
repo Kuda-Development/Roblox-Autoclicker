@@ -1,4 +1,4 @@
-# Roblox Autoclicker 🕹️
+# Roblox Autoclicker🖱️
 
 Roblox Autoclicker is a feature-rich autoclicker designed for Roblox, developed in C# using .NET Framework and WPF. It provides a seamless experience for automating repetitive tasks in the game while introducing additional features to enhance user control.
 
@@ -10,8 +10,20 @@ Roblox Autoclicker is a feature-rich autoclicker designed for Roblox, developed 
 - **Opacity .5 on game**: Roblox Autoclicker automatically lowers its opacity to .5 when the Roblox game window is active, allowing you to see through the autoclicker.
 - **Customizable Hotkeys**: Customize the hotkeys that control the autoclicker to your liking.
 - **Easy-to-use UI**: Roblox Autoclicker's intuitive user interface makes it easy to configure and use.
-
+  
 ## Usage 🚀
+
+1. Download lastest Relase
+2. Open Roblox AC.exe 
+3. Set Keybind, CPS & Topmost Preferences
+4. Click start
+5. Go to roblox and press the custom keybind
+   
+## Preview 😺
+
+https://github.com/Kuda-Development/Roblox-Autoclicker/assets/95893893/1e035e06-479e-40b7-a28e-9506b27aebb1
+
+## Source Code Usage 🚀
 
 1. Clone the repository:
 
@@ -41,5 +53,7 @@ We welcome contributions from the community. If you have ideas, bug reports, or 
 Roblox Autoclicker is licensed under the MIT License.
 
 **Note**: Roblox Autoclicker is developed by Kuda Development and is not affiliated with or endorsed by Roblox Corporation.
+
+
 
 ## KUDA LLC 😺

@@ -13,7 +13,7 @@ Roblox Autoclicker is a feature-rich autoclicker designed for Roblox, developed 
   
 ## Usage 🚀
 
-1. Download lastest Relase
+1. Download [Latest Relase](https://github.com/Kuda-Development/Roblox-Autoclicker/releases/latest)
 2. Open Roblox AC.exe 
 3. Set Keybind, CPS & Topmost Preferences
 4. Click start

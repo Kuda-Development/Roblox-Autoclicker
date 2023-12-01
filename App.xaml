@@ -99,7 +99,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style x:Key="BaseVolumeSliderStyle" TargetType="{x:Type Slider}">
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="Minimum" Value="0" />
@@ -115,14 +114,12 @@
             <Setter Property="LargeChange" Value="10" />
             <Setter Property="IsManipulationEnabled" Value="true" />
         </Style>
-
         <Style
      x:Key="{x:Type Slider}"
      BasedOn="{StaticResource BaseVolumeSliderStyle}"
      TargetType="{x:Type Slider}">
             <Setter Property="Template" Value="{DynamicResource VolumeSliderTemplate}" />
         </Style>
-
         <ControlTemplate x:Key="VolumeSliderTemplate" TargetType="{x:Type Slider}">
             <Grid>
                 <Border Name="TrackBackground" Height="2" />
@@ -167,6 +164,63 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+        <Style x:Key="CheckBoxFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border>
+                            <Rectangle
+                          Margin="15,0,0,0"
+                          Stroke="#60000000"
+                          StrokeDashArray="1 2"
+                          StrokeThickness="1" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="{x:Type CheckBox}" TargetType="CheckBox">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="FocusVisualStyle" Value="{StaticResource CheckBoxFocusVisual}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Border
+                      x:Name="Border"
+                      Width="25"
+                      Height="25"
+                      Background="Transparent"
+                      BorderBrush="#99FFFFFF"
+                      BorderThickness="1"
+                      CornerRadius="5">
+                            <Label
+                          x:Name="Check"
+                          HorizontalContentAlignment="Center"
+                          VerticalContentAlignment="Center"
+                          FontFamily="/Fonts/#Segoe Fluent Icons"
+                          FontSize="13"
+                          FontWeight="Bold"
+                          Visibility="Hidden">
+                                
+                            </Label>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#5fcbfd" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#5fcbfd" />
+                                <Setter TargetName="Check" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#99FFFFFF" />
+                                <Setter TargetName="Check" Property="Visibility" Value="Hidden" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
 
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>

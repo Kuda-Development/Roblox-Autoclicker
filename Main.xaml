@@ -7,7 +7,7 @@
     x:Name="Window"
     Title="Roblox AC"
     Width="428"
-    Height="281"
+    Height="321"
     AllowsTransparency="True"
     Background="{x:Null}"
     ResizeMode="NoResize"
@@ -15,6 +15,7 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Window.Resources>
+
         <Storyboard x:Key="UnFocus">
             <DoubleAnimation
                 Storyboard.TargetName="Window"
@@ -29,24 +30,9 @@
                 To="1"
                 Duration="0:0:0.1" />
         </Storyboard>
-        <Storyboard x:Key="TopmostOn">
-            <ColorAnimation
-                Storyboard.TargetName="TopmostToggle"
-                Storyboard.TargetProperty="(Label.Foreground).(SolidColorBrush.Color)"
-                From="#FF737373"
-                To="#60cdff"
-                Duration="0:0:0.3" />
-        </Storyboard>
 
-        <Storyboard x:Key="TopmostOff">
-            <ColorAnimation
-                Storyboard.TargetName="TopmostToggle"
-                Storyboard.TargetProperty="(Label.Foreground). (SolidColorBrush.Color)"
-                From="#60cdff"
-                To="#FF737373"
-                Duration="0:0:0.3" />
 
-        </Storyboard>
+
         <Style TargetType="TextBox">
             <Setter Property="Foreground" Value="#FFB1B1B1" />
             <Setter Property="Template">
@@ -237,7 +223,7 @@
                         VerticalAlignment="Top">
                         <Label
                             VerticalContentAlignment="Center"
-                            FontSize="15"
+                            FontSize="14"
                             Foreground="#FFE0E0E0">
                             Keybind
                         </Label>
@@ -252,18 +238,35 @@
 
                     </Grid>
                     <Grid
+                       
+                        x:Name="TopmostContainer"
+                        Height="30"
+                        Margin="50,116,50,0"
+                        VerticalAlignment="Top">
+                        <Label
+                            VerticalContentAlignment="Center"
+                            Content="Topmost"
+                            FontSize="14"
+                            Foreground="#FFE0E0E0" />
+                        <CheckBox
+                            x:Name="topmost_checkbox"
+                            Margin="300,0,0,0"
+                           
+                            Click="ToggleTopmost"
+                             />
+
+                    </Grid>
+                    <Grid
                         x:Name="CpsContainer"
-                        Height="55"
-                        Margin="50,52,50,0"
+                        Height="54"
+                        Margin="50,51,50,0"
                         VerticalAlignment="Top">
                         <Grid>
                             <Label
                                 VerticalAlignment="Top"
                                 VerticalContentAlignment="Center"
-                                FontSize="15"
-                                Foreground="#FFE0E0E0">
-                                Clicks per second
-                            </Label>
+                                FontSize="14"
+                                Foreground="#FFE0E0E0" Content="Clicks per second"/>
                             <Slider
                                 x:Name="ValueSlider"
                                 Width="100"
@@ -278,69 +281,58 @@
                                 x:Name="SelectedValue"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Foreground="#FFADADAD">
-                                Current: 1
-                            </Label>
+                                Foreground="#FFADADAD" Content="Current: 1"/>
                             <Label
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Foreground="#FFADADAD">
-                                30
-                            </Label>
+                                Foreground="#FFADADAD" Content="30"/>
                             <Label
                                 Margin="0,0,84,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
-                                Foreground="#FFADADAD">
-                                1
-                            </Label>
+                                Foreground="#FFADADAD" Content="1"/>
 
                         </Grid>
 
 
                     </Grid>
-                    <Grid
-                        x:Name="WatchButtons"
-                        Height="40"
-                        Margin="50,122,50,70">
-                        <Button
-                            x:Name="StartButton"
-                            Width="325"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="#60CDFF"
-                            Click="StartAc"
-                            Style="{DynamicResource W11Button}">
-                            Start
-                        </Button>
-                    </Grid>
-                    <Grid Height="30" Margin="30,174,30,28">
-                        <Label
-                            x:Name="Status"
-                            Width="182"
-                            Height="30"
-                            HorizontalAlignment="Left"
-                            HorizontalContentAlignment="Center"
-                            Foreground="#FFBBBABA">
-                            Status: Stopped
-                        </Label>
-                        <Label
-                            x:Name="Indication"
-                            Width="182"
-                            Height="30"
-                            HorizontalAlignment="Right"
-                            HorizontalContentAlignment="Center"
-                            Foreground="#FFBBBABA">
-                            Indication: Start AC
-                        </Label>
+                    <Grid x:Name="WatcherContainer" Margin="30,162,30,41">
+                        <Grid
+                            x:Name="WatchButtons"
+                            Height="40"
+                            Margin="20,0,20,35">
+                            <Button
+                                x:Name="StartButton"
+                                Width="325"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="#60CDFF"
+                                Click="StartAc"
+                                Style="{DynamicResource W11Button}" Content="Start"/>
+                        </Grid>
+                        <Grid Height="30" Margin="0,45,0,0">
+                            <Label
+                                x:Name="Status"
+                                Width="182"
+                                Height="30"
+                                HorizontalAlignment="Left"
+                                HorizontalContentAlignment="Center"
+                                Foreground="#FFBBBABA" Content="Status: Stopped"/>
+                            <Label
+                                x:Name="Indication"
+                                Width="182"
+                                Height="30"
+                                HorizontalAlignment="Right"
+                                HorizontalContentAlignment="Center"
+                                Foreground="#FFBBBABA" Content="Indication: Start AC"/>
+                        </Grid>
                     </Grid>
                 </Grid>
                 <Grid Height="30" VerticalAlignment="Bottom">
                     <Label
                         x:Name="TopmostToggle"
                         HorizontalContentAlignment="Center"
-                        Foreground="#FF737373"
-                        MouseUp="MakeAppTopmost">
+                        Foreground="#FF737373">
                         Kuda LLC
                     </Label>
                 </Grid>

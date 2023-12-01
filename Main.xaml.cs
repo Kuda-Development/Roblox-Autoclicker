@@ -93,12 +93,10 @@ namespace Autoclicker
             if (Topmost)
             {
                 Topmost = false;
-                ((Storyboard)TryFindResource("TopmostOff")).Begin();
             }
             else
             {
                 Topmost = true;
-                ((Storyboard)TryFindResource("TopmostOn")).Begin();
             }
         }
 
@@ -186,8 +184,13 @@ namespace Autoclicker
             _key = (Key)k.ConvertFromString(Properties.Settings.Default.Keybind);
             ValueSlider.Value = Properties.Settings.Default.CPSValue;
             Topmost = Properties.Settings.Default.Topmost;
-            if (Topmost)
-                ((Storyboard)TryFindResource("TopmostOn")).Begin();
+            topmost_checkbox.IsChecked = Topmost;
+        }
+
+        private void ToggleTopmost(object sender, RoutedEventArgs e)
+        {
+            var checkbox = (CheckBox)sender;
+            Topmost = checkbox.IsChecked == true ? true : false;
         }
     }
 }
